@@ -1,0 +1,11 @@
+neo4j==5.26.0
+sentence-transformers==3.2.1
+ollama==0.3.3
+openai==1.54.0
+spacy==3.8.2
+spacy-llm==0.7.2
+
+
+
+
+
