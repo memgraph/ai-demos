@@ -20,3 +20,7 @@ This repository is a collection of our demos and examples and we'll continue gro
 ## [Agentic GraphRAG](./agentic-graph-rag/)
 
 #TODO: write down/link to docs why this is important and list examples we have. 
+
+## [Integrations](./integrations/)
+
+#TODO: write down/link to docs why this is important and list examples we have. 
