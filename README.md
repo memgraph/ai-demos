@@ -15,7 +15,7 @@ This repository is a collection of our demos and examples and we'll continue gro
 
 ## [GraphRAG](./graph-rag/) 
 
-#TODO: write down/link to docs why this is important and list examples we have. 
+[GraphRAG](https://memgraph.com/docs/ai-ecosystem/graph-rag) demo provides an implementation of RAG system
 
 ## [Agentic GraphRAG](./agentic-graph-rag/)
 
