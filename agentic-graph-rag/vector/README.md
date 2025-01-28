@@ -24,7 +24,7 @@ OPENAI_API_KEY=your_openai_api_key
 
 Depending on where your Memgraph is running, adjust the client IP and port 
 
-### 5. Run the Script
+### 5. Run the script
 
 Open a terminal, navigate to the directory containing `vector_search.py`, and run:
 
