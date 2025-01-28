@@ -20,7 +20,7 @@ key:
 OPENAI_API_KEY=your_openai_api_key
 ```
 
-### 3. Run the Script
+### 3. Run the script
 
 Use Streamlit to run the script. Open a terminal, navigate to the directory
 containing agenticGraphRAG.py, and run:
