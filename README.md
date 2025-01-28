@@ -45,15 +45,41 @@ accessibility.
 
 ## [Retrieval](./retrieval/)
 
-#TODO: write down/link to docs why this is important and list examples we have. 
+**Description:** This directory contains demos focused on various retrieval strategies to efficiently query and extract relevant information from a knowledge graph. These examples illustrate how to leverage Memgraph's capabilities to perform advanced searches and retrieve data based on specific criteria.
+
+**Contents:**
+- **Demo: [Vector Search](./retrieval/vector-search/)**
+  - **Overview:** This demo showcases the use of vector search in Memgraph to find semantically similar nodes based on embeddings. It highlights the process of encoding node properties and performing similarity searches to retrieve relevant data.
+  - **Key Features:**
+    - Encoding node properties into embeddings
+    - Performing vector searches to find similar nodes
+    - Advanced querying capabilities to explore the retrieved data
 
 ## [GraphRAG](./graph-rag/) 
 
-[GraphRAG](https://memgraph.com/docs/ai-ecosystem/graph-rag) demo provides an implementation of RAG system
+**Description:** This directory contains demos focused on building a Graph-based Retrieval-Augmented Generation (GraphRAG) system that uses Memgraph, to perform knowledge graph-based question answering. The demos illustrates how to build an end-to-end GraphRAG system using Memgraph.
+
+**Contents:**
+- **Demo: [GraphRAG](./graph-rag/graphRAG.ipynb)**
+  - **Overview:** This demo demonstrates the implementation of a GraphRAG system using a Game of Thrones dataset. It involves enriching the knowledge graph with unstructured data, performing vector searches, and using LLMs to answer questions based on the graph data.
+  - **Key Features:**
+    - Enriching the knowledge graph with unstructured data
+    - Performing vector searches to find relevant nodes
+    - Using LLMs to answer questions based on the graph data
+    - Embedding the node properties and labels
+    - Performing the relevance expansions with Memgraph BFS algorithm
 
 ## [Agentic GraphRAG](./agentic-graph-rag/)
 
-#TODO: write down/link to docs why this is important and list examples we have. 
+**Description:** This directory contains demos focused on building an autonomous agent using the GraphRAG system. These examples illustrate how to create an agent that can interact with a knowledge graph, retrieve relevant information, and generate responses based on the data. The agents are dataset agnostic. 
+
+**Contents:**
+- **Demo: [Agentic GraphRAG](./agentic-graph-rag/agenticGraphRAG.py)**
+  - **Overview:** This demo showcases the creation of an autonomous agent using the GraphRAG system. It highlights the process of integrating Memgraph, Sentence Transformers, and OpenAI's GPT models to build an agent that can answer questions and perform tasks based on the knowledge graph.
+  - **Key Features:**
+    - Building an autonomous agent using GraphRAG
+    - Integrating Memgraph, Sentence Transformers, and OpenAI's GPT models
+    - Advanced querying and response generation based on the knowledge graph
 
 ## [Integrations](./integrations/)
 
