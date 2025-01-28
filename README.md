@@ -57,7 +57,7 @@ accessibility.
 
 ## [GraphRAG](./graph-rag/) 
 
-**Description:** This directory contains demos focused on building a Graph-based Retrieval-Augmented Generation (GraphRAG) system that uses Memgraph, to perform knowledge graph-based question answering. The demos illustrates how to build an end-to-end GraphRAG system using Memgraph.
+**Description:** This directory contains demos focused on building a Graph-based Retrieval-Augmented Generation (GraphRAG) system that uses Memgraph, to perform knowledge graph-based question answering. The demo illustrates how to build an end-to-end GraphRAG system using Memgraph.
 
 **Contents:**
 - **Demo: [GraphRAG](./graph-rag/graphRAG.ipynb)**
