@@ -12,7 +12,7 @@ Ensure you have all the required dependencies installed. You can use `pip` to in
 pip install -r requirements.txt
 ```
 
-### 2. Set Up Environment Variables
+### 2. Set Up environment variables
 
 Create a .env file in the same directory as your script and add your OpenAI API key:
 
