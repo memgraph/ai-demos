@@ -4,7 +4,7 @@
 
 Follow these steps to run the `vector_search.py` script:
 
-### 1. Install Dependencies
+### 1. Install dependencies
 
 Ensure you have all the required dependencies installed. You can use `pip` to install them. 
 
