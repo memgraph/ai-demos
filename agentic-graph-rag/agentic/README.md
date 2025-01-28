@@ -6,18 +6,8 @@ Follow these steps to run the `agenticGraphRAG.py` script:
 
 ### 1. Install Dependencies
 
-Ensure you have all the required dependencies installed. You can use `pip` to
-install them. Create a `requirements.txt` file with the following content:
+Ensure you have all the required dependencies installed. You can use `pip` to install them. 
 
-```plaintext
-openai
-sentence-transformers
-streamlit
-neo4j
-pydantic
-python-dotenv
-```
-Then run:
 ```
 pip install -r requirements.txt
 ```
