@@ -18,7 +18,7 @@ accessibility.
 **Contents:**
 - **Demo: [Catcher in the Rye](./knowledge-graph-creation/catcher-in-the-rye/)**
   - **Overview:** This demo focuses on constructing a knowledge graph from the
-    text of "Catcher in the Rye." It demonstrates the extraction of entities and
+    text of "Catcher in the Rye". It demonstrates the extraction of entities and
     relationships from the summary of the book, showcasing how to model and
     build context from the data within Memgraph.
   - **Key Features:**
