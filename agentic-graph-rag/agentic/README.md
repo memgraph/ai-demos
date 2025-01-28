@@ -1,6 +1,6 @@
 # Agentic GraphRAG
 
-## How to Run
+## How to run
 
 Follow these steps to run the `agenticGraphRAG.py` script:
 
