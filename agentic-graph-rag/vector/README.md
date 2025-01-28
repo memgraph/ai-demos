@@ -1,6 +1,6 @@
 # Vector Search
 
-## How to Run
+## How to run
 
 Follow these steps to run the `vector_search.py` script:
 
