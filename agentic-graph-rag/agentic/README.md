@@ -18,6 +18,8 @@ key:
 
 ```
 OPENAI_API_KEY=your_openai_api_key
+GRAPH_ALGORITHMS_ENABLED=true/false (whether you would like to run Community Detection, PageRank, etc.)
+VECTOR_SEARCH_ENABLED=true/false (whether you have embeddings in your dataset and run vector search)
 ```
 
 ### 3. Run the script
