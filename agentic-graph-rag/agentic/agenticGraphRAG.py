@@ -101,6 +101,7 @@ def get_schema_string(db_client) -> str:
         edges = schema_info["edges"]
         node_indexes = schema_info["node_indexes"]
         edge_indexes = schema_info["edge_indexes"]
+        enums = schema_info["enums"]
 
         schema_str = "Nodes:\n"
         for node in nodes:
@@ -127,6 +128,10 @@ def get_schema_string(db_client) -> str:
         schema_str += "\nEdge Indexes:\n"
         for index in edge_indexes:
             schema_str += f"Type: {index['type']} | Properties: {index['properties']}\n"
+
+        schema_str += "\nEnums:\n"
+        for enum in enums:
+            schema_str += f"Name: {enum['name']} | Values: {enum['values']}\n"
 
         return schema_str
 
@@ -159,6 +164,7 @@ def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
     - Use Memgraph MAGE procedures instead of Neo4j APOC procedures.
     - Do not include any explanations or apologies in your responses.
     - Do not include any text except the generated Cypher statement.
+    - If there is any enum manipulation needed, you can help yourself by reading this link https://memgraph.com/docs/fundamentals/data-types#enum
 
     With all the above information and instructions, generate Cypher query
     for the user question.
