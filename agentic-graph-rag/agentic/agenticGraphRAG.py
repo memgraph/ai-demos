@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import os
 import json
 
+from classify_question import get_classify_question_prompt
+
 
 # TODO (@antejavor): Use OpenAI tiktoken for limits on the number of tokend used: https://github.com/openai/tiktoken?tab=readme-ov-file
 # TODO (@antejavor): Make sure the code follows the chain of command: https://cdn.openai.com/spec/model-spec-2024-05-08.html#follow-the-chain-of-command
@@ -38,51 +40,15 @@ class ToolSelection(BaseModel):
     tool: str
     explanation: str
 
-# - Path
-# - Path: The query seeks information about the path between two entities, such as shortest path or existence of a path.
-# - Path: Is there a any path between John and Mary? 
-
-
-
-CLASSIFY_QUESTION_PROMPT = """
-Classify the following user question into query type
-
-    Query Types:
-    - Retrieval
-    - Structure 
-    - Global
-    - Database
-    - Other
-
-    Each type of question has different characteristics.
-    - Retrieval: Direct Lookups, specific and well-defined. The query seeks information about a single entity (node or relationship). 
-    - Structure: Exploratory, the query seeks information about the structure of the graph, close relationships between entities, or properties of nodes.
-    - Global: The query seeks context about the entire graph, community, such as the most important node or global trends in graph. 
-    - Database: The query seeks statistical information about the database, such as index information, node count, or relationship count, config etc.
-    - Other: If the question does not fit into any of the above categories, if it is ambiguous or unclear, joke or irrelevant.
-
-    Example of a questions for each type:
-    - Retrieval: How old is a person with the name "John"? 
-    - Structure: Does John have a job? Is John a friend of Mary?
-    - Globals: What is the most important node in the graph?
-    - Database: What indexes does Memgraph have?
-    - Other: What is the meaning of life?
-
-    In the explanation, provide a brief description of the type of question, and why you classified it as such. 
-
-    The question is in <Question> </Question> format.
-
-"""
-
 
 # Classify the type of the question
-def classify_the_question(openai_client, user_question: str) -> Dict:
-
+def classify_the_question(openai_client, user_question: str, config) -> Dict:
+    classify_question_prompt = get_classify_question_prompt(config)
     user_question = f"<Question>{user_question}</Question>"
     completion = openai_client.beta.chat.completions.parse(
         model=MODEL,
         messages=[
-            {"role": "developer", "content": CLASSIFY_QUESTION_PROMPT},
+            {"role": "developer", "content": classify_question_prompt},
             {"role": "user", "content": user_question},
         ],
         response_format=QuestionType,
@@ -119,14 +85,12 @@ def fetch_data(
 
 
 def run_other_pipe(openai_client, user_question, question_type) -> Dict:
-
     return {
         "question": user_question,
         "answer": "The question is classified as 'Other' and no further processing is done.",
         "type": question_type.type,
         "explaination": question_type.explanation,
     }
-
 
 
 def get_schema_string(db_client) -> str:
@@ -168,7 +132,6 @@ def get_schema_string(db_client) -> str:
 
 
 def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
-
     schema = get_schema_string(db_client)
 
     prompt_user = f"""
@@ -249,10 +212,13 @@ def config_tool(db_client) -> str:
             config_str += f"Name: {record['name']} | Default Value: {record['default_value']} | Current Value: {record['current_value']} | Description: {record['description']}\n"
         return config_str
 
+
 # Page Rank tool
 def page_rank_tool(db_client) -> Dict:
     with db_client.session() as session:
-        result = session.run("CALL pagerank.get() YIELD node, rank RETURN node, rank LIMIT 10;")
+        result = session.run(
+            "CALL pagerank.get() YIELD node, rank RETURN node, rank LIMIT 10;"
+        )
         result_str = ""
         for record in result:
             node = record["node"]
@@ -260,59 +226,71 @@ def page_rank_tool(db_client) -> Dict:
             result_str += f"Node: {properties}, Rank: {record['rank']}\n"
         return result_str
 
+
 def community_tool(db_client) -> Dict:
     with db_client.session() as session:
         result = session.run("MATCH (n:Community) RETURN n.id, n.summary;")
         result_str = ""
         for record in result:
-            result_str += f"Community ID: {record['n.id']}, Summary: {record['n.summary']}\n"
+            result_str += (
+                f"Community ID: {record['n.id']}, Summary: {record['n.summary']}\n"
+            )
         return result_str
+
 
 def precompute_community_summary(db_client, openai_client) -> Dict:
     number_of_communities = 0
     with db_client.session() as session:
-        result = session.run("""
+        result = session.run(
+            """
         CALL community_detection.get()
         YIELD node, community_id 
         SET node.community_id = community_id;
         """
         )
-        result = session.run("""
+        result = session.run(
+            """
         MATCH (n)
         RETURN count(distinct n.community_id) as community_count;
         """
         )
         for record in result:
-            number_of_communities = record['community_count']
+            number_of_communities = record["community_count"]
             print(f"Number of communities: {record['community_count']}")
-        
+
     with db_client.session() as session:
         communities = []
         for i in range(0, number_of_communities):
             community_string = ""
             community_id = 0
-            result = session.run(f"""
+            result = session.run(
+                f"""
             MATCH (start), (end) 
             WHERE start.community_id = {i} AND end.community_id = {i} AND id(start) < id(end)
             MATCH p = (start)-[*..1]-(end)
             RETURN p; 
-            """)
+            """
+            )
             for record in result:
-                path = record['p']
+                path = record["p"]
                 for rel in path.relationships:
                     start_node = rel.start_node
                     end_node = rel.end_node
-                    start_node_properties = {k: v for k, v in start_node.items() if k != 'embedding'}
-                    end_node_properties = {k: v for k, v in end_node.items() if k != 'embedding'}
+                    start_node_properties = {
+                        k: v for k, v in start_node.items() if k != "embedding"
+                    }
+                    end_node_properties = {
+                        k: v for k, v in end_node.items() if k != "embedding"
+                    }
                     community_string += f"({start_node_properties})-[:{rel.type}]->({end_node_properties})\n"
                     community_id = i
             communities.append({"id": community_id, "data": community_string})
-        
+
     print("Total number of communites: ", len(communities))
     community_summary = []
     for community in communities:
-        community_id = community['id']
-        community_string = community['data']
+        community_id = community["id"]
+        community_string = community["data"]
         # Generate summary using OpenAI LLM
         try:
             print("Creating a summary for the community with id:", community_id)
@@ -329,21 +307,20 @@ def precompute_community_summary(db_client, openai_client) -> Dict:
             summary = "Summary could not be generated."
             print(summary)
 
-    
     with db_client.session() as session:
         for community in community_summary:
-            community_id = community['id']
-            summary = community['summary']
+            community_id = community["id"]
+            summary = community["summary"]
             session.run(
                 "CREATE (c:Community { id: $id, summary: $summary})",
-                summary=summary, 
-                id=community_id
+                summary=summary,
+                id=community_id,
             )
-    
+
     return 0
 
+
 def tool_global_selection_pipe(openai_client, user_question) -> Dict:
-    
     question = f"<Question>{user_question}</Question>"
 
     prompt = f"""
@@ -366,9 +343,7 @@ def tool_global_selection_pipe(openai_client, user_question) -> Dict:
     return completion.choices[0].message.parsed
 
 
-
 def tool_database_selection_pipe(openai_client, user_question) -> Dict:
-
     question = f"<Question>{user_question}</Question>"
 
     prompt = f"""
@@ -405,7 +380,6 @@ def generate_and_run_query(openai_client, prompt_developer, prompt_user):
 
 
 def run_structure_pipe(db_client, openai_clien, user_question) -> Dict:
-
     model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
     question_embedding = model.encode(user_question)
     node = find_most_similar_node(db_client, question_embedding)
@@ -455,7 +429,6 @@ def get_relevant_data(db_client, node, hops):
 
 
 def find_most_similar_node(db_client, question_embedding):
-
     with db_client.session() as session:
         result = session.run(
             f"CALL vector_search.search('index_name', 10, {question_embedding.tolist()}) YIELD * RETURN *;"
@@ -499,19 +472,21 @@ def generate_final_response(openai_client, results, user_question: str):
 def get_openai_client():
     return OpenAI()
 
+
 @st.cache_resource()
 def get_db_client():
     return neo4j.GraphDatabase.driver("bolt://localhost:7687", auth=("", ""))
 
+
 @st.cache_resource()
-def preprocess_data(_db_client, _openai_client):
-    precompute_community_summary(db_client, openai_client)
+def preprocess_data(_db_client, _openai_client, config):
+    if config.get("graph-algorithms-enabled", False):
+        precompute_community_summary(db_client, openai_client)
 
     return "Proccessing data completed"
 
 
-def main(db_client, openai_client):
-
+def main(db_client, openai_client, config):
     st.title("Agentic GraphRAG with Memgraph")
 
     # User input
@@ -520,7 +495,7 @@ def main(db_client, openai_client):
     if st.button("Run GraphRAG Pipeline"):
         if user_question.strip():
             st.write("### Classifying Question type...")
-            question_type = classify_the_question(openai_client, user_question)
+            question_type = classify_the_question(openai_client, user_question, config)
             st.json(question_type)
 
             if question_type.type == "Other":
@@ -540,21 +515,36 @@ def main(db_client, openai_client):
                 )
                 st.json(final_response)
                 st.write("### Pipeline Completed.")
-            
 
         else:
             st.error("Please enter a question to proceed.")
 
+
+def str_to_bool(value: str) -> bool:
+    if str(value).strip().lower() == "true":
+        return True
+    if str(value).strip().lower() == "false":
+        return False
+    raise Exception(f"Unknown value for boolean {value}")
 
 
 if __name__ == "__main__":
     load_dotenv()
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
+    config = {
+        "graph-algorithms-enabled": str_to_bool(
+            os.environ.get("GRAPH_ALGORITHMS_ENABLED", "false")
+        ),
+        "vector-search-enabled": str_to_bool(
+            os.environ.get("VECTOR_SEARCH_ENABLED", "false")
+        ),
+    }
+
     openai_client = get_openai_client()
 
     db_client = get_db_client()
 
-    preprocess_data(db_client, openai_client)
+    preprocess_data(db_client, openai_client, config)
 
-    main(db_client, openai_client)
+    main(db_client, openai_client, config)
