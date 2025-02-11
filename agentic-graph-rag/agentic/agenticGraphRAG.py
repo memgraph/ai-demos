@@ -7,7 +7,12 @@ from typing import Dict
 from dotenv import load_dotenv
 import os
 import json
+import logging
+import tiktoken
+# from state_machine_agent import FST_manager
 
+logging.basicConfig(format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # TODO (@antejavor): Use OpenAI tiktoken for limits on the number of tokend used: https://github.com/openai/tiktoken?tab=readme-ov-file
 # TODO (@antejavor): Make sure the code follows the chain of command: https://cdn.openai.com/spec/model-spec-2024-05-08.html#follow-the-chain-of-command
@@ -22,7 +27,6 @@ MODEL = "gpt-4o-2024-08-06"
 # - Path Finding Between Entities/Relations (path): Is John a friend of Mary? If not, what is the shortest path between them?
 # - Database Statistical and Count Queries (statistical): How many people have a job? How many nodes are there in the graph?
 # - Global Insights and Trends (global): What is the most important node in the graph?
-
 
 # Schema definition for tool selection
 class QuestionType(BaseModel):
@@ -168,7 +172,7 @@ def get_schema_string(db_client) -> str:
 
 
 def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
-
+    logger.info("Running retrieval pipe")
     schema = get_schema_string(db_client)
 
     prompt_user = f"""
@@ -201,6 +205,10 @@ def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
     for the user question.
     """
 
+    logger.info(prompt_user)
+    encoding = tiktoken.get_encoding("cl100k_base")
+    token_count = len(encoding.encode(prompt_user))
+    logger.info(f"Token count: {token_count}")
     query = generate_and_run_query(openai_client, prompt_developer, prompt_user)
     print("### Cypher Query:")
     print(query)
@@ -215,6 +223,8 @@ def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
                     res.append(record)
                 return {"query": query, "results": res}
             except Exception as e:
+                logger.error("Error in running the query")
+                logger.error(e)
                 print(e)
                 error_message = str(e)
                 correction_prompt = f"""
@@ -495,6 +505,46 @@ def generate_final_response(openai_client, results, user_question: str):
     return completion.choices[0].message
 
 
+def index_setup(db_client):
+    with db_client.session() as session:
+        print("Creating the vector index...")
+        session.run(
+            """
+            CREATE VECTOR INDEX index_name ON :Entity(embedding) WITH CONFIG {"dimension": 384, "capacity": 1000, "metric": "cos","resize_coefficient": 2};
+            """
+        )
+
+def compute_node_embeddings(db_client):
+    model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
+    with db_client.session() as session:
+        # Retrieve all nodes
+        result = session.run("MATCH (n) RETURN n")
+        print("Embedded data: ")
+        for record in result:
+            node = record["n"]
+            # Check if the node already has an embedding
+            if "embedding" in node:
+                print("Embedding already exists")
+                return
+
+            # Combine node labels and properties into a single string
+            node_data = (
+                " ".join(node.labels)
+                + " "
+                + " ".join(f"{k}: {v}" for k, v in node.items())
+            )
+            print(node_data)
+            # Compute the embedding for the node
+            node_embedding = model.encode(node_data)
+
+            # Store the embedding back into the node
+            session.run(
+                f"MATCH (n) WHERE id(n) = {node.element_id} SET n.embedding = {node_embedding.tolist()}"
+            )
+
+        session.run("MATCH (n) SET n:Entity")
+
+
 @st.cache_resource()
 def get_openai_client():
     return OpenAI()
@@ -505,9 +555,40 @@ def get_db_client():
 
 @st.cache_resource()
 def preprocess_data(_db_client, _openai_client):
-    precompute_community_summary(db_client, openai_client)
-
+    # precompute_community_summary(db_client, openai_client)
+    index_setup(db_client)
+    compute_node_embeddings(db_client)
     return "Proccessing data completed"
+
+
+
+# # Define LLM prompt for state management
+# def generate_prompt(fsm: FSM, user_input: str) -> str:
+#     return f"""
+#     You are managing a finite state machine (FSM) for a GraphRAG application. The FSM helps agents find and answer specific questions.
+    
+#     Current state: {fsm.state}
+#     State context: {fsm.state_context[fsm.state]}
+#     Valid next states: {fsm.transitions[fsm.state].next_states}
+#     Transition context: {fsm.transitions[fsm.state].context}
+#     History of states: {fsm.history}
+    
+#     User input: "{user_input}"
+#     Based on this, decide the best next state and return a JSON object with the key 'next_state'. Ensure the state is valid.
+#     """
+
+# def determine_next_state(fsm: FSM, user_input: str) -> State:
+#     response = openai.ChatCompletion.create(
+#         model="gpt-4",
+#         messages=[{"role": "system", "content": generate_prompt(fsm, user_input)}],
+#         temperature=0.5
+#     )
+#     next_state = json.loads(response["choices"][0]["message"]["content"]).get("next_state")
+#     if next_state and next_state in fsm.transitions[fsm.state].next_states:
+#         return State(next_state)
+#     else:
+#         raise ValueError("Invalid state returned by LLM.")
+
 
 
 def main(db_client, openai_client):
@@ -520,6 +601,8 @@ def main(db_client, openai_client):
     if st.button("Run GraphRAG Pipeline"):
         if user_question.strip():
             st.write("### Classifying Question type...")
+
+            logger.info("Classifying Question type...")
             question_type = classify_the_question(openai_client, user_question)
             st.json(question_type)
 
@@ -541,7 +624,6 @@ def main(db_client, openai_client):
                 st.json(final_response)
                 st.write("### Pipeline Completed.")
             
-
         else:
             st.error("Please enter a question to proceed.")
 

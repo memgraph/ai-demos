@@ -1,5 +1,6 @@
 import json
 import neo4j
+import tiktoken
 
 
 def format_schema():
@@ -44,3 +45,8 @@ def format_schema():
 # Call the function to test it
 schema_str = format_schema()
 print(schema_str)
+
+# Count the schema string with tiktoken
+encoding = tiktoken.get_encoding("cl100k_base")
+token_count = len(encoding.encode(schema_str))
+print(f"Token count: {token_count}")
