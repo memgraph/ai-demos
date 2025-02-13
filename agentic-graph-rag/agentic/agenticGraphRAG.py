@@ -241,7 +241,7 @@ def text_to_Cypher(db_client, openai_client, user_question) -> Dict:
         return tool_response.set_status(False).set_results("Error in running the query.")
 
     
-
+# Agent generation of a Cypher question
 def generate_cypher_query(openai_client, prompt_messages):
     completion = openai_client.beta.chat.completions.parse(
         model=MODEL["name"],
@@ -270,6 +270,7 @@ def config_tool(db_client) -> ToolResponse:
         logger.error("Error in running the Config tool query.")
         return ToolResponse(False, "Error in running the Config tool query.")
 
+# Agent page rank choice
 def page_rank_choice(openai_client, user_question) -> Dict:
     question = f"<Question>{user_question}</Question>"
     prompt = f"""
@@ -739,12 +740,12 @@ def main(db_client, openai_client):
             response = execute_tool(tools.first_pick, user_question, db_client, openai_client)
             if response.status:
                 logger.info(f"First pick: '{tools.first_pick}' succeeded.")
-                st.write(f"Tool 1: '{tools.first_pick}' has succeeded.")
+                st.write(f"#### Tool 1: '{tools.first_pick}' has succeeded.")
             else:
                 st.write(f"Tool 1:'{tools.first_pick}' has failed.")
                 response = execute_tool(tools.second_pick, user_question, db_client, openai_client)
                 if response.status:
-                    st.write(f"Tool 2: '{tools.second_pick}' has succeeded.")
+                    st.write(f"#### Tool 2: '{tools.second_pick}' has succeeded.")
 
             st.write("### Tool Execution Completed.")
 
