@@ -14,29 +14,13 @@ import tiktoken
 logging.basicConfig(format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-# TODO (@antejavor): Figure out how to handle data flow in the pipelines, represent success and failure
-
+# Predefined model used. 
 MODEL = { 
         "name" : "gpt-4o-2024-08-06", 
         "context_window": 128000 
-        } 
+} 
 
-# Types of questions that are possible:
-# - Specific Data Retrieval (retrieval): Get me the age of a person with the name "John".
-# - Graph Structure Insights (structure): Does John have a job?
-# - Path Finding Between Entities/Relations (path): Is John a friend of Mary? If not, what is the shortest path between them?
-# - Database Statistical and Count Queries (statistical): How many people have a job? How many nodes are there in the graph?
-# - Global Insights and Trends (global): What is the most important node in the graph?
-
-# Define the list of possible questions types in list
-QUESTION_TYPES = [
-    "Retrieval",
-    "Structure",
-    "Statistical",
-    "Global",
-]
-
+# Response format
 class ToolResponse():
     def __init__(self, status=False, results=""):
         self.status = status
@@ -77,13 +61,17 @@ class QuestionType(BaseModel):
     type: str
     explanation: str
 
-
+# Community summary generation
 class Community(BaseModel):
     summary: str    
 
 
-CLASSIFY_QUESTION_PROMPT = """
-Classify the following user question into query type
+# Classify the type of the question
+# Question types are defined here: Retrieval, Structure, Global, Database
+def classify_the_question(openai_client, user_question: str) -> Dict:
+
+    prompt = f"""
+    Classify the following user question into query type
 
     Query Types:
     - Retrieval
@@ -106,18 +94,14 @@ Classify the following user question into query type
     In the explanation, provide a brief description of the type of question, and why you classified it as such. 
 
     The question is in <Question> </Question> format.
+    """
 
-"""
-
-
-# Classify the type of the question
-def classify_the_question(openai_client, user_question: str) -> Dict:
 
     user_question = f"<Question>{user_question}</Question>"
     completion = openai_client.beta.chat.completions.parse(
         model=MODEL["name"],
         messages=[
-            {"role": "developer", "content": CLASSIFY_QUESTION_PROMPT},
+            {"role": "developer", "content": prompt},
             {"role": "user", "content": user_question},
         ],
         response_format=QuestionType,
@@ -125,9 +109,7 @@ def classify_the_question(openai_client, user_question: str) -> Dict:
 
     return completion.choices[0].message.parsed
 
-
-
-
+# Getting the full schema string from the database
 def get_schema_string(db_client) -> str:
     
     with db_client.session() as session:
@@ -168,7 +150,6 @@ def get_schema_string(db_client) -> str:
 
 
 # Tool used to run text_to_Cypher
-# TODO (@antejavor): Reminder for the examples of case-sensitivity and feedback loops 
 def text_to_Cypher(db_client, openai_client, user_question) -> Dict:
     logger.info("Running text_to_cypher tool")
 
@@ -229,7 +210,7 @@ def text_to_Cypher(db_client, openai_client, user_question) -> Dict:
                 if not results.peek():
                     raise ValueError(
                         "The query did not return any results. There is a possible issue with the query "
-                        "labels and parameters if you are matching strings consider matching them in the case-insensitive way."
+                        "labels and parameters, if you are matching strings consider matching them in the case-insensitive way."
                     )
                 for record in results:
                     res.append(record)
@@ -719,8 +700,6 @@ def execute_tool(tool: str, user_question: str, db_client,  openai_client ) -> T
     response = None
     try:
         logger.info(f"Trying tool: {tool}")
-        # TODO: Implement actual execution logic for each tool
-        # Simulating success/failure for now
         response = tool_execution(tool, db_client, openai_client, user_question)
         return response
     except Exception as e:
@@ -753,34 +732,37 @@ def main(db_client, openai_client):
             tools = tool_selection_pipe(openai_client, user_question, question_type)
 
             st.write("### Tools selected:") 
-            st.write("Tool 1 ", tools.first_pick)  
+            st.write("Tool 1: ", tools.first_pick)  
             st.write("Tool 2: ", tools.second_pick)
 
              # Try first pick
             response = execute_tool(tools.first_pick, user_question, db_client, openai_client)
             if response.status:
-                logger.info(f"First pick '{tools.first_pick}' succeeded.")
+                logger.info(f"First pick: '{tools.first_pick}' succeeded.")
+                st.write(f"Tool 1: '{tools.first_pick}' has succeeded.")
             else:
+                st.write(f"Tool 1:'{tools.first_pick}' has failed.")
                 response = execute_tool(tools.second_pick, user_question, db_client, openai_client)
                 if response.status:
-                    logger.info(f"Second pick '{tools.second_pick}' succeeded.")
-                else:
-                    st.error("Tool failed to execute")
-                    logger.error(f"Second pick '{tools.second_pick}' failed.")
+                    st.write(f"Tool 2: '{tools.second_pick}' has succeeded.")
 
             st.write("### Tool Execution Completed.")
 
-            st.write("### Tool Response:")
-            st.write(response.results)
+            if response.status is False:
+                st.error("Tool execution has failed.")
+            else:
+                st.write("### Tool Response:")
+                formated_response = {"Response": response.results}
+                st.json(formated_response)
 
-            st.write("## Generating Final Response...")
+                st.write("## Generating Final Response...")
 
-            final_response = generate_final_response(
-                openai_client, response.results, user_question
-            )
-            st.write("### Final Response:")
-            st.write(final_response.content)
-            st.write("## Agentic GraphRAG Pipeline Completed.")
+                final_response = generate_final_response(
+                    openai_client, response.results, user_question
+                )
+                st.write("### Final Response:")
+                st.write(final_response.content)
+                st.write("## Agentic GraphRAG Pipeline Completed.")
                 
         else:
             st.error("Please enter a question to proceed.")

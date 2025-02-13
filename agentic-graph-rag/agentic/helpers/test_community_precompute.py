@@ -45,8 +45,6 @@ def format_community():
 
         
 
-
-
 # Call the function to test it
 format_community()
 
