@@ -6,7 +6,7 @@ docker run -d --name memgraph_graphRAG -p 7687:7687 -p 7444:7444 memgraph/memgra
 
 sleep 10
 
-#Chage the path to the dataset
+#Change the path to the dataset
 echo "Importing the dataset into Memgraph..."
 cat ..path to any dataset | docker run -i memgraph/mgconsole:latest --host host.docker.internal
 

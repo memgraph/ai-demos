@@ -81,6 +81,9 @@ This directory contains demos focused on building an autonomous agent using the 
     - Integrating Memgraph, Sentence Transformers, and OpenAI's GPT models
     - Advanced querying and response generation based on the knowledge graph
 
+**:book: Additional resources**
+ - [Blog: Memgraph agentic GraphRAG](https://memgraph.com/blog/build-agentic-graphrag-ai)
+
 ## [Integrations](./integrations/)
 
 This directory contains integrations that demonstrate how to
