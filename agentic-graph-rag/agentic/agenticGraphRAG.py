@@ -431,6 +431,23 @@ def precompute_community_summary(db_client, openai_client) -> Dict:
     
     return True
 
+def check_if_community_summary_exists(db_client) -> bool:
+    try:
+        with db_client.session() as session:
+            result = session.run("""
+            MATCH (c:Community)
+            RETURN count(c) as community_count;
+            """
+            )
+            for record in result:
+                if record['community_count'] > 0:
+                    return True
+    except Exception as e:
+        logger.error("Error in running the community detection query.")
+        logger.error(e)
+    return False
+    
+
 
 
 def decide_on_structure_parameters(openai_client, messages) -> Dict:
@@ -616,12 +633,15 @@ def get_db_client():
 
 @st.cache_resource()
 def preprocess_data(_db_client, _openai_client):
-    # status = precompute_community_summary(db_client, openai_client)
-    # if status:
-    #     logger.info("Community summary precomputed.")
-    # else:
-    #     logger.error("Error in precomputing community summary.")
-    #     logger.error("Community questions will fail")
+    if not check_if_community_summary_exists(_db_client):
+        status = precompute_community_summary(_db_client, _openai_client)
+        if status:
+            logger.info("Community summary precomputed.")
+        else:
+            logger.error("Error in precomputing community summary.")
+            logger.error("Community questions will fail")
+    else:
+        logger.info("Community summary already exists.")
 
     index_setup(db_client)
     compute_node_embeddings(db_client)
@@ -672,11 +692,6 @@ def tool_selection_pipe(openai_client, user_question, question_type) -> Dict:
 
 
 def tool_execution(tool: str, db_client, openai_client, user_question) -> ToolResponse:
-    """
-    Simulates execution success/failure for demo purposes.
-    Replace this with actual logic to execute each tool.
-    """
-    # For demo, let's assume "Text to Cypher" always succeeds
     if tool == "Cypher":
         return text_to_Cypher(db_client, openai_client, user_question)
     elif tool == "Vector Relevance Expansion":
