@@ -24,6 +24,12 @@ key:
 OPENAI_API_KEY=your_openai_api_key
 ```
 
+or export the OpenAI API key:
+
+```
+export OPENAI_API_KEY=your_openai_api_key
+```
+
 ### 4. Run the script
 
 Use Streamlit to run the script. Open a terminal, navigate to the directory
