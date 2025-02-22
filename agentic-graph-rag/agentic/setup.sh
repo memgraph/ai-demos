@@ -7,7 +7,16 @@ docker run -d --name memgraph_graphRAG -p 7687:7687 -p 7444:7444 memgraph/memgra
 sleep 10
 
 echo "Importing the dataset into Memgraph..."
-cat "$dataset_path" | docker run -i memgraph/mgconsole:latest --host host.docker.internal
+lines=$(wc -l < $dataset_path)
+batch_size=100
+start=1
+while [ $start -le $lines ]; do
+  sed -n "${start},$((start + batch_size - 1))p" $dataset_path | cat | docker run -i memgraph/mgconsole:latest --host host.docker.internal
+  start=$((start + batch_size))
+done
+# NOTE: cat data | mgconsole doesn't work because mgconsole can take a limited amount/size of queries
+# TODO: Fix mgconsole so that it can take file of any size.
+# cat "$dataset_path" | docker run -i memgraph/mgconsole:latest --host host.docker.internal
 
 # Wait for user to press Ctrl+C.
 echo "Press Ctrl+C to stop the Memgraph container..."
