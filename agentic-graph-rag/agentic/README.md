@@ -21,8 +21,7 @@ If you haven't updated the `setup.sh` script, it will load an example AskNews
 finance dataset. 
 
 If you prefer not to use `setup.sh` script, make sure you have Memgraph running
-with the dataset loaded. Ideally, Memgraph should be running with
-`schema-info-enabled` set to `True` for the best performance. 
+with the dataset loaded and `schema-info-enabled` set to `True`.
 
 ### 2. Install dependencies
 
