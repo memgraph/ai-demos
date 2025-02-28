@@ -92,8 +92,8 @@ highlight the process of leveraging tools like LlamaIndex and LangChain to
 process unstructured data, extract entities and relationships and build
 knowledge graphs seamlessly within Memgraph.
 
-**Contents:**
-- **:bulb: Demo: [Langchain](./integrations/langchain/)**
+**Langchain**
+- **:bulb: Demo: [KG creation](./integrations/langchain/)**
   - This demo showcases the integration of LangChain with Memgraph
     to create a knowledge graph from unstructured data. It highlights the use of
     LangChain's framework to process text, extract entities and relationships,
@@ -103,6 +103,7 @@ knowledge graphs seamlessly within Memgraph.
     - Construction of a knowledge graph within Memgraph
     - Advanced querying capabilities to explore the structured data
 
+**LlamaIndex**
 - **:bulb: Demo: [LlamaIndex](./integrations/llamaindex/property-graph-index)**
   - This demo demonstrates the use of LlamaIndex with Memgraph to
     build a knowledge graph from unstructured data. It showcases the framework's
