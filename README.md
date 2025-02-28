@@ -104,7 +104,7 @@ knowledge graphs seamlessly within Memgraph.
     - Advanced querying capabilities to explore the structured data
 
 **LlamaIndex**
-- **:bulb: Demo: [LlamaIndex](./integrations/llamaindex/property-graph-index)**
+- **:bulb: Demo: [KG creation and retrieval](./integrations/llamaindex/property-graph-index)**
   - This demo demonstrates the use of LlamaIndex with Memgraph to
     build a knowledge graph from unstructured data. It showcases the framework's
     ability to parse complex documents, extract meaningful entities and
