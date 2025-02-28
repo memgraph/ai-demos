@@ -92,8 +92,8 @@ highlight the process of leveraging tools like LlamaIndex and LangChain to
 process unstructured data, extract entities and relationships and build
 knowledge graphs seamlessly within Memgraph.
 
-**Contents:**
-- **:bulb: Demo: [Langchain](./integrations/langchain/)**
+**Langchain**
+- **:bulb: Demo: [KG creation](./integrations/langchain/)**
   - This demo showcases the integration of LangChain with Memgraph
     to create a knowledge graph from unstructured data. It highlights the use of
     LangChain's framework to process text, extract entities and relationships,
@@ -103,7 +103,8 @@ knowledge graphs seamlessly within Memgraph.
     - Construction of a knowledge graph within Memgraph
     - Advanced querying capabilities to explore the structured data
 
-- **:bulb: Demo: [LlamaIndex](./integrations/llamaindex/)**
+**LlamaIndex**
+- **:bulb: Demo: [KG creation and retrieval](./integrations/llamaindex/property-graph-index)**
   - This demo demonstrates the use of LlamaIndex with Memgraph to
     build a knowledge graph from unstructured data. It showcases the framework's
     ability to parse complex documents, extract meaningful entities and
@@ -113,6 +114,20 @@ knowledge graphs seamlessly within Memgraph.
     - Integration with Memgraph to construct and store the knowledge graph
     - Visualization and querying of the graph to derive insights from the data
       using [Memgraph Lab](https://memgraph.com/docs/data-visualization)
+
+- **:bulb: Demo: [Single-agent RAG system with LlamaIndex](./integrations/llamaindex/single-agent-rag-system)**
+  - This demo showcases how to build a Retrieval-Augmented Generation (RAG) system using LlamaIndex and Memgraph with a single-agent architecture. The agent retrieves relevant information from the knowledge graph and generates context-aware responses.
+  - **:mag_right: Key Features:**
+    - Implementation of a single-agent RAG system for intelligent data retrieval
+    - Integration with Memgraph for storing and managing structured knowledge
+    - Querying and analyzing the knowledge graph to generate insightful responses
+
+- **:bulb: Demo: [Multi-agent RAG System with LlamaIndex](./integrations/llamaindex/multi-agent-rag-system)**
+    - This demo extends the RAG framework by utilizing a multi-agent architecture with LlamaIndex and Memgraph. Multiple agents collaborate to retrieve, process, and refine knowledge from the graph, enhancing response accuracy and depth.
+    - **:mag_right: Key Features:**
+      - Multi-agent system for distributed retrieval
+      - Advanced knowledge graph construction and querying with Memgraph
+      - Improved contextual understanding through agent collaboration
 
 **:book: Additional resources**
 - [LangChain & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#langchain)
