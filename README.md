@@ -123,11 +123,26 @@ knowledge graphs seamlessly within Memgraph.
     - Querying and analyzing the knowledge graph to generate insightful responses
 
 - **:bulb: Demo: [Multi-agent RAG System with LlamaIndex](./integrations/llamaindex/multi-agent-rag-system)**
-    - This demo extends the RAG framework by utilizing a multi-agent architecture with LlamaIndex and Memgraph. Multiple agents collaborate to retrieve, process, and refine knowledge from the graph, enhancing response accuracy and depth.
-    - **:mag_right: Key Features:**
-      - Multi-agent system for distributed retrieval
-      - Advanced knowledge graph construction and querying with Memgraph
-      - Improved contextual understanding through agent collaboration
+  - This demo extends the RAG framework by utilizing a multi-agent architecture with LlamaIndex and Memgraph. Multiple agents collaborate to retrieve, process, and refine knowledge from the graph, enhancing response accuracy and depth.
+  - **:mag_right: Key Features:**
+    - Multi-agent system for distributed retrieval
+    - Advanced knowledge graph construction and querying with Memgraph
+    - Improved contextual understanding through agent collaboration
+
+- **:bulb: Demo: [Multi-agent RAG with Memgraph procedures](./integrations/llamaindex/agentic-rag-with-graph-tools/agentic_rag_with_pagerank.ipynb)**
+  - This demo demonstrates how to integrate Memgraph procedures, such as
+      PageRank, as tools within a multi-agent architecture using LlamaIndex. The
+      agents work collaboratively to retrieve data from the graph, process it,
+      and perform calculations like summing the weight properties of nodes based
+      on the PageRank algorithm.
+  - **:mag_right: Key Features:**
+    - Integration of PageRank as a tool in a multi-agent system
+    - Execution of graph algorithms within agents for enhanced retrieval and
+      computation
+    - Multi-agent collaboration to process and analyze data retrieved from
+      Memgraph
+    - Dynamic query execution combining graph-based retrieval and computation
+      tasks
 
 **:book: Additional resources**
 - [LangChain & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#langchain)
