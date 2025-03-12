@@ -129,7 +129,7 @@ knowledge graphs seamlessly within Memgraph.
     - Advanced knowledge graph construction and querying with Memgraph
     - Improved contextual understanding through agent collaboration
 
-- **:bulb: Demo: [Multi-agent RAG with Memgraph procedures](./integrations/llamaindex/agentic-rag-with-graph-tools/agentic_rag_with_pagerank.ipynb)**
+- **:bulb: Demo: [Multi-agent RAG with Memgraph tools](./integrations/llamaindex/agentic-rag-with-graph-tools/agentic_rag_with_pagerank.ipynb)**
   - This demo demonstrates how to integrate Memgraph procedures, such as
       PageRank, as tools within a multi-agent architecture using LlamaIndex. The
       agents work collaboratively to retrieve data from the graph, process it,
