@@ -1,0 +1,5 @@
+configuration:
+  business_rules:
+    - label: "label"
+      prop: "prop"
+      explanation: "Description of the business rule."
