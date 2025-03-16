@@ -1,5 +1,0 @@
-configuration:
-  business_rules:
-    - label: "person"
-      prop: "qid_number"
-      explanation: "This is the true ID number of the person when matching persons by ID. If you are not matching by ID, don't apply this rule."
