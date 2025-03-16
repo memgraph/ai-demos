@@ -1,0 +1,17 @@
+[project]
+name = "synonym-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "black>=25.1.0",
+    "colorama>=0.4.6",
+    "langchain-community>=0.3.19",
+    "langchain-core>=0.3.45",
+    "langchain-openai>=0.3.8",
+    "langgraph>=0.3.11",
+    "mcp[cli]>=1.4.1",
+    "neo4j>=5.28.1",
+    "ollama>=0.4.7",
+]
