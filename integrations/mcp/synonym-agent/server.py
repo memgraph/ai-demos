@@ -1,8 +1,12 @@
 import ollama
 from mcp.server.fastmcp import FastMCP
 
+# NOTE: Add/export {{path_to_project}}/integrations/langgraph/synonym-agent/ to
+# PYTHONPATH.
+from workflows import run_workflow
 
-def prompt(content):
+
+def prompt_llama3(content):
     response = ollama.chat(
         model="llama3",
         messages=[
@@ -17,9 +21,16 @@ def prompt(content):
 
 mcp = FastMCP("Synonym Agent")
 
-# NOTE: At the time of implementation (2025-03-16), MCP does NOT supprot
-# complex workflows or tree of thought -> all resoning logic has to be
-# implemented under a single prompt.
+
+# Simple example of a prompt under MCP.
+@mcp.prompt()
+def prompt_llama3_via_mcp(question: str) -> str:
+    return prompt_llama3(question)
+
+
+# NOTE: At the time of implementation (2025-03-16), MCP does NOT support
+# complex workflows or tree of thoughts -> all reasoning logic has to be
+# implemented under a single prompt. Using langgraph workflow example.
 @mcp.prompt()
 def answer_business_specific_question(question: str) -> str:
-    return prompt(question)
+    return run_workflow(question)["final_answer"]
