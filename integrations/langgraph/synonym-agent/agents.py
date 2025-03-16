@@ -11,7 +11,7 @@ import yaml
 URI = os.getenv("MEMGRAPH_URI", "bolt://localhost:7687")
 USER = os.getenv("MEMGRAPH_USER", "")
 PASSWORD = os.getenv("MEMGRAPH_PASSWORD", "")
-OPENAI_API_KEY = "<YOUR OPENAI API KEY>"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
 # Initialize MemgraphGraph
