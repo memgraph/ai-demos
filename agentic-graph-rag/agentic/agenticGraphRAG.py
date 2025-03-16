@@ -2,6 +2,7 @@ from openai import OpenAI
 from sentence_transformers import SentenceTransformer
 import streamlit as st
 import neo4j
+import re
 from pydantic import BaseModel
 from typing import Dict
 from dotenv import load_dotenv
@@ -134,6 +135,29 @@ def get_schema_string(db_client) -> str:
             schema_str += f"Name: {enum['name']} | Values: {enum['values']}\n"
 
         return schema_str
+    
+    
+def get_correction_prompt(query, error_message, schema, question):
+    return f"""
+    The following Cypher query generated an error:
+    Query: {query}
+    Error: {error_message}
+    Schema: {schema}
+    Question: {question}
+
+    Please correct the Cypher query based on the error, schema and question.
+    """
+
+def extract_procedure_names(cypher_query: str):
+    """
+    Extracts all procedure names from a given Cypher query string.
+    Procedures are identified as words following the CALL keyword.
+    Excludes subqueries that start with `CALL {`.
+    """
+    # This regex ensures we do NOT capture CALL that starts a subquery (CALL { ... })
+    pattern = re.compile(r'\bCALL\s+((?!\{)[a-zA-Z0-9_.]+)', re.IGNORECASE)
+    matches = pattern.findall(cypher_query)
+    return matches
 
 
 def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
@@ -164,44 +188,37 @@ def run_retrival_pipe(db_client, openai_client, user_question) -> Dict:
     - Use Memgraph MAGE procedures instead of Neo4j APOC procedures.
     - Do not include any explanations or apologies in your responses.
     - Do not include any text except the generated Cypher statement.
-    - If there is any enum manipulation needed, you can help yourself by reading this link https://memgraph.com/docs/fundamentals/data-types#enum
+    - If there is any enum manipulation needed, they are written like this: EnumType::EnumValue (example: n.prop = Country::Croatia), without quotes. You can help yourself by reading this link https://memgraph.com/docs/fundamentals/data-types#enum
+    - For path traversals, use *BFS instead of plain star operator(*)
 
     With all the above information and instructions, generate Cypher query
     for the user question.
     """
-
-    query = generate_and_run_query(openai_client, prompt_developer, prompt_user)
-    print("### Cypher Query:")
-    print(query)
-
-    res = []
+    
+    attempts = []
     with db_client.session() as session:
-        for _ in range(3):  # Try correction process up to 3 times
+        for i in range(5):  # Try correction process up to 3 times
+            print(f"Attempt {i+1}")
+            query = generate_and_run_query(openai_client, prompt_developer, prompt_user)
+            print("### Cypher Query:")
+            print(query)
+            
             try:
                 results = session.run(query)
+                res = []
                 for record in results:
-                    print(record)
+                    # print(record)
                     res.append(record)
-                return {"query": query, "results": res}
+                    
+                attempts.append({"query": query, "success": True})
+                return {"query": query, "results": res, "attempts": attempts}
             except Exception as e:
                 print(e)
                 error_message = str(e)
-                correction_prompt = f"""
-                The following Cypher query generated an error:
-                Query: {query}
-                Error: {error_message}
-                Schema: {schema}
-                Question: {user_question}
+                attempts.append({"query": query, "success": False, "error_message": error_message})
+                prompt_user = get_correction_prompt(query, error_message, schema, user_question)
 
-                Please correct the Cypher query based on the error, schema and question.
-                """
-                query = generate_and_run_query(
-                    openai_client, prompt_developer, correction_prompt
-                )
-                print("### Corrected Cypher Query:")
-                print(query)
-
-        return {"answer": "Issue with the corrected query. " + query}
+        return {"answer": "Issue with the corrected query. " + query, "attempts": attempts}
 
 
 # Schema tool
