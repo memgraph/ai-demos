@@ -15,6 +15,7 @@ class WorkflowState(TypedDict):
     question: str
     schema: str
     initial_query: str
+    business_reasoning: str
     cypher_query: str
     query_result: str
     final_answer: str
@@ -38,6 +39,28 @@ def get_business_reasoning_workflow():
     graph_workflow.add_edge("initialize_graph_context", "generate_cypher")
     graph_workflow.add_edge("generate_cypher", "synonym_reasoning")
     graph_workflow.add_edge("synonym_reasoning", "execute_cypher")
+    graph_workflow.add_edge("execute_cypher", "generate_response")
+
+    graph_workflow.set_entry_point("initialize_graph_context")
+    workflow = graph_workflow.compile()
+
+    return workflow
+
+
+def get_basic_cypher_workflow():
+    # Define the state graph
+    graph_workflow = StateGraph(WorkflowState)
+    graph_workflow.add_node(
+        "initialize_graph_context", RunnableLambda(initialize_graph_context)
+    )
+    graph_workflow.add_node("generate_cypher", RunnableLambda(generate_cypher_query))
+    graph_workflow.add_node("execute_cypher", RunnableLambda(execute_cypher_query))
+    graph_workflow.add_node(
+        "generate_response", RunnableLambda(generate_human_readable_response)
+    )
+
+    graph_workflow.add_edge("initialize_graph_context", "generate_cypher")
+    graph_workflow.add_edge("generate_cypher", "execute_cypher")
     graph_workflow.add_edge("execute_cypher", "generate_response")
 
     graph_workflow.set_entry_point("initialize_graph_context")
