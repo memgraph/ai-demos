@@ -6,21 +6,14 @@ from langchain_community.chains.graph_qa.prompts import (
     MEMGRAPH_GENERATION_PROMPT,
 )
 import yaml
+from dotenv import load_dotenv
 
+load_dotenv()
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 URI = os.getenv("MEMGRAPH_URI", "bolt://localhost:7687")
 USER = os.getenv("MEMGRAPH_USER", "")
 PASSWORD = os.getenv("MEMGRAPH_PASSWORD", "")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-
-
-# Initialize MemgraphGraph
-graph = MemgraphGraph(
-    url=URI,
-    username=USER,
-    password=PASSWORD,
-)
-
 
 class BusinessSynonymRule:
     def __init__(self, label: str, prop: str, explanation: str):
@@ -71,6 +64,7 @@ def clean_cypher_query(cypher_query: str) -> str:
 
 def initialize_graph_context(state):
     """Agent provides the state with the schema."""
+    graph = MemgraphGraph(url=URI, username=USER, password=PASSWORD)
     return {"schema": graph.get_schema}
 
 
@@ -123,13 +117,14 @@ def business_synonym_reasoning(state):
     revised_query = llm.invoke(formatted_prompt)
     cleaned_cypher_query = clean_cypher_query(revised_query.content)
 
-    return {"cypher_query": cleaned_cypher_query}
+    return {"cypher_query": cleaned_cypher_query, "business_reasoning": rules}
 
 
 def execute_cypher_query(state):
     """Executes the Cypher query on Memgraph."""
     cypher_query = state["cypher_query"]
     try:
+        graph = MemgraphGraph(url=URI, username=USER, password=PASSWORD)
         # result = graph.query(cypher_query)
         data, _, _ = graph._driver.execute_query(
             cypher_query,

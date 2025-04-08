@@ -1,0 +1,5 @@
+configuration:
+  business_rules:
+    - label: "Person"
+      prop: "true_id"
+      explanation: "This is the property for ID. Whenever a user wants to specify to retrieve the person by id, you will use the true_id property."

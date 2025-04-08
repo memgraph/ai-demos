@@ -65,6 +65,7 @@ def generate_frontend():
 
             # Displaying Question
             st.markdown(f"**Question:** {result['question']}")
+            st.markdown(f"**Business reasoning:** {result['business_reasoning']}")
 
             # Displaying based on checkbox selection
             if plain_answer:
@@ -78,7 +79,10 @@ def generate_frontend():
 
             # Always show the generated query
             st.markdown(
-                f"**Generated Cypher Query:**\n```cypher\n{result['cypher_query']}\n```"
+                f"**Initial Cypher Query:**\n```cypher\n{result['initial_query']}\n```"
+            )
+            st.markdown(
+                f"**Final generated Cypher Query:**\n```cypher\n{result['cypher_query']}\n```"
             )
         else:
             st.warning("Please enter a question.")
