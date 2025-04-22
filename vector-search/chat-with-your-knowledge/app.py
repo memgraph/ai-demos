@@ -1,8 +1,18 @@
 import streamlit as st
 from controller import StorageController, LLMController
 
-controller = StorageController()
-llm_controller = LLMController()
+@st.cache_resource
+def get_controller():
+    return StorageController()
+
+
+@st.cache_resource
+def get_llm_controller():
+    return LLMController()
+
+
+controller = get_controller()
+llm_controller = get_llm_controller()
 
 # --- Sidebar Navigation ---
 st.sidebar.title("📂 Navigation")
