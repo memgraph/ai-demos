@@ -3,7 +3,7 @@
 dataset_path="${1:-asknews-finance-graph.cypherl}"
 
 echo "Starting Memgraph and importing the $dataset_path dataset for testing..."
-docker run -d --name memgraph_graphRAG -p 7687:7687 -p 7444:7444 memgraph/memgraph-mage:3.0-memgraph-3.0 --log-level=TRACE --also-log-to-stderr --schema-info-enabled=True 
+docker run -d --name memgraph_graphRAG -p 7687:7687 -p 7444:7444 memgraph/memgraph-mage:3.2 --log-level=TRACE --also-log-to-stderr --schema-info-enabled=True 
 sleep 10
 
 echo "Importing the dataset into Memgraph..."
