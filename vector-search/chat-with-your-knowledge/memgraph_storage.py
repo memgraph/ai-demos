@@ -154,7 +154,9 @@ class MemgraphStorage(Storage):
             ORDER BY p.index ASC
             """
         )
-        return [{"content": record["content"], "id": record[id]} for record in results]
+        return [
+            {"content": record["content"], "id": record["id"]} for record in results
+        ]
 
     def delete_paragraph(self, category: str, paragraph_id: str):
         self._memgraph.execute(
