@@ -144,6 +144,21 @@ knowledge graphs seamlessly within Memgraph.
     - Dynamic query execution combining graph-based retrieval and computation
       tasks
 
+**Cognee**
+- **:bulb: Demo: [Cognee x Memgraph integration](./integrations/cognee)**
+  - This demo showcases the integration of Cognee with Memgraph to build a
+    semantically rich knowledge graph from unstructured natural language input.
+    It illustrates how Cognee leverages large language models (LLMs) to extract
+    concepts and relationships from raw text and store them in Memgraph for
+    advanced querying and visualization.
+  - **:mag_right: Key Features:**
+    - Conversion of unstructured text into structured graph data using LLMs
+    - Seamless connection between Cognee and Memgraph for storage and search
+    - Semantic search capabilities to query the knowledge graph using natural
+      language
+    - Interactive graph visualization and exploration using [Memgraph
+      Lab](https://memgraph.com/docs/data-visualization)
+
 **:book: Additional resources**
 - [LangChain & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#langchain)
 - ["Improved Knowledge Graph Creation with LangChain and LlamaIndex"](https://memgraph.com/blog/improved-knowledge-graph-creation-langchain-llamaindex)
