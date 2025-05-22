@@ -103,6 +103,10 @@ knowledge graphs seamlessly within Memgraph.
     - Construction of a knowledge graph within Memgraph
     - Advanced querying capabilities to explore the structured data
 
+**LangGraph**
+- **:bulb: Demo: [Graph-Aware Agents with LangGraph and Memgraph AI Toolkit](./integrations/langgraph/memgraph-toolkit-chatbot)**
+  - This demo showcases a simple agent built using the LangGraph framework and the [Memgraph AI Toolkit](https://github.com/memgraph/ai-toolkit) to demonstrate how to integrate graph-based tooling into your LLM stack.
+
 **LlamaIndex**
 - **:bulb: Demo: [KG creation and retrieval](./integrations/llamaindex/property-graph-index)**
   - This demo demonstrates the use of LlamaIndex with Memgraph to
