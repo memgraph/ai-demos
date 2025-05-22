@@ -5,8 +5,9 @@
 > [Quickstart instructions](https://langchain-ai.github.io/langgraph/tutorials/langgraph-platform/local-server/) from the LangGraph documentation to
 > create a local LangGraph server.
 
-
 In this directory, you can find code for a simple agent built using the LangGraph framework and the [Memgraph AI Toolkit](https://github.com/memgraph/ai-toolkit) to demonstrate how to integrate graph-based tooling into your LLM stack. LangGraph helps define structured workflows for language agents, while Memgraph provides powerful graph querying capabilities. Together, they make a compelling combination for building intelligent, context-aware applications.
+
+![langgraph-studio-memgraph-toolkit](./static/langgraph-studio-memgraph-toolkit.png)
 
 ## Run the app
 
@@ -58,3 +59,5 @@ To ask the question, add the following JSON to the input:
 ```
 
 And click Submit button. You'll see how the agent invokes `show_schema_info()` tool to provide the necessary details. 
+
+![langgraph-studio-memgraph-schema](./static/langgraph-studio-memgraph-schema.png)
