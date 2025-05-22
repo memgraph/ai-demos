@@ -9,6 +9,19 @@ In this directory, you can find code for a simple agent built using the LangGrap
 
 ![langgraph-studio-memgraph-toolkit](./static/langgraph-studio-memgraph-toolkit.png)
 
+## Prerequisite
+
+The agent invokes tools that execute queries against Memgraph database, meaning that you need a running Memgraph instance. In the example, Memgraph should be running on `localhost:7687`. To start Memgraph MAGE, run the following command in your terminal:
+
+```
+docker run -p 7687:7687 \
+  --name memgraph \
+  memgraph/memgraph-mage:latest \
+  --schema-info-enabled=true
+```
+
+Once Memgraph is running, load the data. In this example, Game of Thrones dataset is loaded from [Memgraph Lab](https://memgraph.com/docs/memgraph-lab). 
+
 ## Run the app
 
 To run the app, first install the LangGraph CLI:
