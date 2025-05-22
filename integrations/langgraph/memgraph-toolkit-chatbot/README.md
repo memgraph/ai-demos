@@ -45,6 +45,7 @@ To test your agent, launch the LangGraph development server with:
 langgraph dev
 ```
 
+This will start a local server and open LangGraph Studio in your browser.
 To ask the question, add the following JSON to the input:
 
 ```
