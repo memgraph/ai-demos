@@ -6,7 +6,15 @@ data, figuring out the best retrieval strategy, implementing GraphRAG or
 creating a fully autonomous agent - the possiblities are endless.
 
 This repository is a collection of our demos and examples and we'll continue
-growing it as we learn. Here's what we have so far:
+growing it as we learn. 
+
+## Table of Contents
+- [Knowledge graph creation](#knowledge-graph-creation)
+- [Retrieval](#retrieval)
+- [GraphRAG](#graphrag)
+- [Agentic GraphRAG](#agentic-graphrag)
+- [Integrations](#integrations)
+
 
 ## [Knowledge graph creation](./knowledge-graph-creation/)
 
@@ -38,9 +46,9 @@ accessibility.
     - Visualization of the complex network within the "Game of Thrones" universe using [Memgraph Lab](https://memgraph.com/docs/data-visualization)
 
 **:book: Additional resources**
-- [More about knowledge graphs in Memgraph](https://memgraph.com/docs/data-modeling/knowledge-graph)
-- [Blog post "How to Extract Entities and Build a Knowledge Graph with Memgraph and SpaCy"](https://memgraph.com/blog/extract-entities-build-knowledge-graph-memgraph-spacy)
-- [Youtube video "Knowledge Graph Creation by Entity Extraction in Memgraph"](https://www.youtube.com/watch?v=HYYhtKC2jyA)
+- [Docs: More about knowledge graphs in Memgraph](https://memgraph.com/docs/data-modeling/knowledge-graph)
+- [Blog: How to Extract Entities and Build a Knowledge Graph with Memgraph and SpaCy](https://memgraph.com/blog/extract-entities-build-knowledge-graph-memgraph-spacy)
+- [YouTube: Knowledge Graph Creation by Entity Extraction in Memgraph](https://www.youtube.com/watch?v=HYYhtKC2jyA)
 
 
 ## [Retrieval](./retrieval/)
@@ -48,12 +56,37 @@ accessibility.
 This directory contains demos focused on various retrieval strategies to efficiently query and extract relevant information from a knowledge graph. These examples illustrate how to leverage Memgraph's capabilities to perform advanced searches and retrieve data based on specific criteria.
 
 **Contents:**
-- **:bulb: Demo: [Vector Search](./retrieval/vector-search/)**
+- **:bulb: Demo: [Vector Search](./retrieval/vector-search/simple-example)**
   - This demo showcases the use of vector search in Memgraph to find semantically similar nodes based on embeddings. It highlights the process of encoding node properties and performing similarity searches to retrieve relevant data.
   - **:mag_right: Key Features:**
     - Encoding node properties into embeddings
     - Performing vector searches to find similar nodes
     - Advanced querying capabilities to explore the retrieved data
+
+- **:bulb: Demo: [Build a Movie Similarity Search Engine with Vector Search in Memgraph](./retrieval/vector-search/vector_search_example.ipynb)**
+  - This demo, based on the blog post ["Build a Movie Similarity Search Engine with Vector Search in Memgraph"](https://memgraph.com/blog/build-movie-similarity-search-vector-search-memgraph), walks through the process of building a movie recommendation system using vector search. It uses OpenAI's embedding API to convert movie plot descriptions into high-dimensional vectors, stores them in Memgraph, and retrieves similar movies via vector similarity search.
+  - **:mag_right: Key Features:**
+    - Using OpenAI to generate embeddings from movie plot summaries
+    - Storing and indexing embeddings in Memgraph
+    - Performing vector similarity searches with Cypher queries
+    - Building a basic recommendation system using semantic search
+    - Visualizing and exploring the graph structure of movie relationships
+
+- **:bulb: Demo: [Vector Search: Turning Unstructured Text into Queryable Knowledge](./retrieval/vector-search/chat-with-your-knowledge)**
+  - This demo illustrates how to transform unstructured text into a queryable knowledge graph using Memgraph's built-in vector search capabilities. By integrating vector embeddings with graph structures, it enables semantic search and interactive applications like Q&A interfaces and automatic quiz generators.
+  - **:mag_right: Key Features:**
+    - **Vector Indexing:** Creating vector indices on nodes to perform efficient similarity searches.
+    - **Data Ingestion:** Transforming paragraphs from unstructured text into graph nodes with embeddings.
+    - **Graph Traversal:** Linking paragraphs to maintain document structure and enable sequential navigation.
+    - **Semantic Search:** Utilizing vector similarity to retrieve contextually relevant information.
+    - **Interactive Applications:** Building tools like Q&A interfaces and quiz generators powered by LLMs and vector search.
+
+**:book: Additional resources**
+- [Blog: Build a Movie Similarity Search Engine with Vector Search in Memgraph](https://memgraph.com/blog/build-movie-similarity-search-vector-search-memgraph)
+- [Workshop: From Pixels to Knowledge: Vector Search & Knowledge Graph](https://github.com/revaddu/Weblica-Workshop-GraphRAG)
+- [Webinar: Vector Search in Memgraph: Turn Unstructured Text into Queryable Knowledge](https://memgraph.com/webinars/vector-search-in-memgraph)
+- [Blog: Vector Search Demo: Turning Unstructured Text into Queryable Knowledge](https://memgraph.com/blog/vector-search-memgraph-knowledge-graph-demo)
+
 
 ## [GraphRAG](./graph-rag/) 
 
@@ -74,7 +107,7 @@ This directory contains demos focused on building a Graph-based Retrieval-Augmen
 This directory contains demos focused on building an autonomous agent using the GraphRAG system. These examples illustrate how to create an agent that can interact with a knowledge graph, retrieve relevant information, and generate responses based on the data. The agents are dataset agnostic. 
 
 **Contents:**
-- **:bulb: Demo: [Agentic GraphRAG](./agentic-graph-rag/agenticGraphRAG.py)**
+- **:bulb: Demo: [Agentic GraphRAG](./agentic-graph-rag/agentic/agenticGraphRAG.py)**
   - This demo showcases the creation of an autonomous agent using the GraphRAG system. It highlights the process of integrating Memgraph, Sentence Transformers, and OpenAI's GPT models to build an agent that can answer questions and perform tasks based on the knowledge graph.
   - **:mag_right: Key Features:**
     - Building an autonomous agent using GraphRAG
@@ -82,7 +115,8 @@ This directory contains demos focused on building an autonomous agent using the 
     - Advanced querying and response generation based on the knowledge graph
 
 **:book: Additional resources**
- - [Blog: Memgraph agentic GraphRAG](https://memgraph.com/blog/build-agentic-graphrag-ai)
+ - [Blog: How To Build Agentic GraphRAG?](https://memgraph.com/blog/build-agentic-graphrag-ai)
+ - [Webinar: How to build Agentic GraphRAG?](https://memgraph.com/webinars/how-to-build-agentic-graphrag)
 
 ## [Integrations](./integrations/)
 
@@ -164,7 +198,10 @@ knowledge graphs seamlessly within Memgraph.
       Lab](https://memgraph.com/docs/data-visualization)
 
 **:book: Additional resources**
-- [LangChain & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#langchain)
-- ["Improved Knowledge Graph Creation with LangChain and LlamaIndex"](https://memgraph.com/blog/improved-knowledge-graph-creation-langchain-llamaindex)
-- [LlamaIndex & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#llamaindex)
-- ["How to build GenAI apps with LlamaIndex and Memgraph"](https://memgraph.com/webinars/how-to-build-genai-apps-with-llamaindex-and-memgraph)
+- [Docs: AI Integrations](https://memgraph.com/docs/ai-ecosystem/integrations)
+- [Blog: Improved Knowledge Graph Creation with LangChain and LlamaIndex](https://memgraph.com/blog/improved-knowledge-graph-creation-langchain-llamaindex)
+- [Blog: How to build single-agent RAG system with LlamaIndex?](https://memgraph.com/blog/single-agent-rag-system)
+- [Blog: How to build multi-agent RAG system with LlamaIndex?](https://memgraph.com/blog/multi-agent-rag-system)
+- [Blog: How to build Agentic RAG with Pagerank using LlamaIndex?](https://memgraph.com/blog/agentic-rag-with-pagerank)
+- [Blog: Introducing the Memgraph MCP Server](https://memgraph.com/blog/introducing-memgraph-mcp-server)
+- [Webinar: How to build GenAI apps with LlamaIndex and Memgraph"](https://memgraph.com/webinars/how-to-build-genai-apps-with-llamaindex-and-memgraph)
