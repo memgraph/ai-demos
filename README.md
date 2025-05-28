@@ -6,7 +6,15 @@ data, figuring out the best retrieval strategy, implementing GraphRAG or
 creating a fully autonomous agent - the possiblities are endless.
 
 This repository is a collection of our demos and examples and we'll continue
-growing it as we learn. Here's what we have so far:
+growing it as we learn. 
+
+## Table of Contents
+- [Knowledge graph creation](#knowledge-graph-creation)
+- [Retrieval](#retrieval)
+- [GraphRAG](#graphrag)
+- [Agentic GraphRAG](#agentic-graphrag)
+- [Integrations](#integrations)
+
 
 ## [Knowledge graph creation](./knowledge-graph-creation/)
 
@@ -38,9 +46,9 @@ accessibility.
     - Visualization of the complex network within the "Game of Thrones" universe using [Memgraph Lab](https://memgraph.com/docs/data-visualization)
 
 **:book: Additional resources**
-- [More about knowledge graphs in Memgraph](https://memgraph.com/docs/data-modeling/knowledge-graph)
-- [Blog post "How to Extract Entities and Build a Knowledge Graph with Memgraph and SpaCy"](https://memgraph.com/blog/extract-entities-build-knowledge-graph-memgraph-spacy)
-- [Youtube video "Knowledge Graph Creation by Entity Extraction in Memgraph"](https://www.youtube.com/watch?v=HYYhtKC2jyA)
+- [Docs: More about knowledge graphs in Memgraph](https://memgraph.com/docs/data-modeling/knowledge-graph)
+- [Blog: How to Extract Entities and Build a Knowledge Graph with Memgraph and SpaCy](https://memgraph.com/blog/extract-entities-build-knowledge-graph-memgraph-spacy)
+- [YouTube: Knowledge Graph Creation by Entity Extraction in Memgraph](https://www.youtube.com/watch?v=HYYhtKC2jyA)
 
 
 ## [Retrieval](./retrieval/)
