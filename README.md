@@ -107,7 +107,7 @@ This directory contains demos focused on building a Graph-based Retrieval-Augmen
 This directory contains demos focused on building an autonomous agent using the GraphRAG system. These examples illustrate how to create an agent that can interact with a knowledge graph, retrieve relevant information, and generate responses based on the data. The agents are dataset agnostic. 
 
 **Contents:**
-- **:bulb: Demo: [Agentic GraphRAG](./agentic-graph-rag/agenticGraphRAG.py)**
+- **:bulb: Demo: [Agentic GraphRAG](./agentic-graph-rag/agentic/agenticGraphRAG.py)**
   - This demo showcases the creation of an autonomous agent using the GraphRAG system. It highlights the process of integrating Memgraph, Sentence Transformers, and OpenAI's GPT models to build an agent that can answer questions and perform tasks based on the knowledge graph.
   - **:mag_right: Key Features:**
     - Building an autonomous agent using GraphRAG
