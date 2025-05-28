@@ -54,7 +54,7 @@ This directory contains demos focused on various retrieval strategies to efficie
     - Encoding node properties into embeddings
     - Performing vector searches to find similar nodes
     - Advanced querying capabilities to explore the retrieved data
-- - **:bulb: Demo: [Build a Movie Similarity Search Engine with Vector Search in Memgraph](./retrieval/vector-search/vector_search_example.ipynb)**
+- **:bulb: Demo: [Build a Movie Similarity Search Engine with Vector Search in Memgraph](./retrieval/vector-search/vector_search_example.ipynb)**
   - This demo, based on the blog post ["Build a Movie Similarity Search Engine with Vector Search in Memgraph"](https://memgraph.com/blog/build-movie-similarity-search-vector-search-memgraph), walks through the process of building a movie recommendation system using vector search. It uses OpenAI's embedding API to convert movie plot descriptions into high-dimensional vectors, stores them in Memgraph, and retrieves similar movies via vector similarity search.
   - **:mag_right: Key Features:**
     - Using OpenAI to generate embeddings from movie plot summaries
