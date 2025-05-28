@@ -54,6 +54,7 @@ This directory contains demos focused on various retrieval strategies to efficie
     - Encoding node properties into embeddings
     - Performing vector searches to find similar nodes
     - Advanced querying capabilities to explore the retrieved data
+
 - **:bulb: Demo: [Build a Movie Similarity Search Engine with Vector Search in Memgraph](./retrieval/vector-search/vector_search_example.ipynb)**
   - This demo, based on the blog post ["Build a Movie Similarity Search Engine with Vector Search in Memgraph"](https://memgraph.com/blog/build-movie-similarity-search-vector-search-memgraph), walks through the process of building a movie recommendation system using vector search. It uses OpenAI's embedding API to convert movie plot descriptions into high-dimensional vectors, stores them in Memgraph, and retrieves similar movies via vector similarity search.
   - **:mag_right: Key Features:**
@@ -62,6 +63,22 @@ This directory contains demos focused on various retrieval strategies to efficie
     - Performing vector similarity searches with Cypher queries
     - Building a basic recommendation system using semantic search
     - Visualizing and exploring the graph structure of movie relationships
+
+- **:bulb: Demo: [Vector Search: Turning Unstructured Text into Queryable Knowledge](./retrieval/vector-search/chat-with-your-knowledge)**
+  - This demo illustrates how to transform unstructured text into a queryable knowledge graph using Memgraph's built-in vector search capabilities. By integrating vector embeddings with graph structures, it enables semantic search and interactive applications like Q&A interfaces and automatic quiz generators.
+  - **:mag_right: Key Features:**
+    - **Vector Indexing:** Creating vector indices on nodes to perform efficient similarity searches.
+    - **Data Ingestion:** Transforming paragraphs from unstructured text into graph nodes with embeddings.
+    - **Graph Traversal:** Linking paragraphs to maintain document structure and enable sequential navigation.
+    - **Semantic Search:** Utilizing vector similarity to retrieve contextually relevant information.
+    - **Interactive Applications:** Building tools like Q&A interfaces and quiz generators powered by LLMs and vector search.
+
+**:book: Additional resources**
+- [Blog: Build a Movie Similarity Search Engine with Vector Search in Memgraph](https://memgraph.com/blog/build-movie-similarity-search-vector-search-memgraph)
+- [Workshop: From Pixels to Knowledge: Vector Search & Knowledge Graph](https://github.com/revaddu/Weblica-Workshop-GraphRAG)
+- [Webinar: Vector Search in Memgraph: Turn Unstructured Text into Queryable Knowledge](https://memgraph.com/webinars/vector-search-in-memgraph)
+- [Blog: Vector Search Demo: Turning Unstructured Text into Queryable Knowledge](https://memgraph.com/blog/vector-search-memgraph-knowledge-graph-demo)
+
 
 ## [GraphRAG](./graph-rag/) 
 
@@ -90,7 +107,8 @@ This directory contains demos focused on building an autonomous agent using the 
     - Advanced querying and response generation based on the knowledge graph
 
 **:book: Additional resources**
- - [Blog: Memgraph agentic GraphRAG](https://memgraph.com/blog/build-agentic-graphrag-ai)
+ - [Blog: How To Build Agentic GraphRAG?](https://memgraph.com/blog/build-agentic-graphrag-ai)
+ - [Webinar: How to build Agentic GraphRAG?](https://memgraph.com/webinars/how-to-build-agentic-graphrag)
 
 ## [Integrations](./integrations/)
 
@@ -172,8 +190,10 @@ knowledge graphs seamlessly within Memgraph.
       Lab](https://memgraph.com/docs/data-visualization)
 
 **:book: Additional resources**
-- [LangChain & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#langchain)
-- ["Improved Knowledge Graph Creation with LangChain and LlamaIndex"](https://memgraph.com/blog/improved-knowledge-graph-creation-langchain-llamaindex)
-- [LlamaIndex & Memgraph](https://memgraph.com/docs/ai-ecosystem/graph-rag#llamaindex)
-- ["How to build GenAI apps with LlamaIndex and Memgraph"](https://memgraph.com/webinars/how-to-build-genai-apps-with-llamaindex-and-memgraph)
-- [From Pixels to Knowledge: Vector Search & Knowledge Graph Workshop](https://github.com/revaddu/Weblica-Workshop-GraphRAG)
+- [Docs: AI Integrations](https://memgraph.com/docs/ai-ecosystem/integrations)
+- [Blog: Improved Knowledge Graph Creation with LangChain and LlamaIndex](https://memgraph.com/blog/improved-knowledge-graph-creation-langchain-llamaindex)
+- [Blog: How to build single-agent RAG system with LlamaIndex?](https://memgraph.com/blog/single-agent-rag-system)
+- [Blog: How to build multi-agent RAG system with LlamaIndex?](https://memgraph.com/blog/multi-agent-rag-system)
+- [Blog: How to build Agentic RAG with Pagerank using LlamaIndex?](https://memgraph.com/blog/agentic-rag-with-pagerank)
+- [Blog: Introducing the Memgraph MCP Server](https://memgraph.com/blog/introducing-memgraph-mcp-server)
+- [Webinar: How to build GenAI apps with LlamaIndex and Memgraph"](https://memgraph.com/webinars/how-to-build-genai-apps-with-llamaindex-and-memgraph)
