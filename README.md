@@ -196,6 +196,15 @@ knowledge graphs seamlessly within Memgraph.
       language
     - Interactive graph visualization and exploration using [Memgraph
       Lab](https://memgraph.com/docs/data-visualization)
+  
+**LightRAG**
+- **:bulb: Demo: [LightRAG with Memgraph Integration](./integrations/lightrag)**
+  - This demo demonstrates how to use LightRAG with Memgraph as the graph storage backend. LightRAG is a simple and fast retrieval-augmented generation framework that combines the power of graph databases with large language models for creating and querying knowledge graphs.
+  - **:mag_right: Key Features:**
+    - Integration of LightRAG with Memgraph for high-performance graph storage
+    - Automatic entity extraction and relationship mapping from unstructured text
+    - Multiple query modes: local, global, hybrid, and mix retrieval strategies
+    - Seamless vector and graph-based similarity search capabilities
 
 **:book: Additional resources**
 - [Docs: AI Integrations](https://memgraph.com/docs/ai-ecosystem/integrations)
