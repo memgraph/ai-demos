@@ -141,6 +141,15 @@ knowledge graphs seamlessly within Memgraph.
 - **:bulb: Demo: [Graph-Aware Agents with LangGraph and Memgraph AI Toolkit](./integrations/langgraph/memgraph-toolkit-chatbot)**
   - This demo showcases a simple agent built using the LangGraph framework and the [Memgraph AI Toolkit](https://github.com/memgraph/ai-toolkit) to demonstrate how to integrate graph-based tooling into your LLM stack.
 
+**MCP**
+- **:bulb: Demo: [SIC classification agent](./integrations/mcp/sic-agent)**
+  - This demo showcases a FastMCP agent that classifies a free-form business description into the OSHA SIC taxonomy stored in Memgraph.
+  - **:mag_right: Key Features:**
+    - Vector search over `IndustryGroup` nodes with Memgraph's vector index
+    - Context expansion through neighboring `Industry` and `MajorGroup` nodes
+    - Clarifying follow-up questions when the first match is ambiguous
+    - Included scraper and embedding scripts for building the SIC graph data
+
 **LlamaIndex**
 - **:bulb: Demo: [KG creation and retrieval](./integrations/llamaindex/property-graph-index)**
   - This demo demonstrates the use of LlamaIndex with Memgraph to
